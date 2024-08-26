@@ -31,8 +31,9 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div             class="container">
         <h2>Post a Message</h2>
+        <input type="text" placeholder="Enter the secret key" id="password">
         <textarea id="message" placeholder="Your message" required></textarea><br>
         <button onclick="sendMessage()">Post</button>
         <p id="status"></p>
@@ -41,23 +42,14 @@
     <script>
         function sendMessage() {
             let message = document.getElementById('message').value;
+            let password = document.getElementById('password').value;
             if(message.trim() === "") {
                 document.getElementById('status').innerText = "Message cannot be empty!";
                 return;
             }
 
-            let url = `https://api.telegram.org/bot7140854622:AAGnMJZ08ZvzPNhTqO24NsxfjWa-gL4dXQE/sendMessage?chat_id=-1002147905876&text=${encodeURIComponent(message)}`;
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
-            xhr.onload = function() {
-                if(xhr.status === 200) {
-                    document.getElementById('status').innerText = "Message sent to Telegram!";
-                    document.getElementById('message').value = "";
-                } else {
-                    document.getElementById('status').innerText = "Failed to send message.";
-                }
-            };
-            xhr.send();
+            fetch('/api/sendMessage', { method: 'post', body: JSON.stringify({ message, password })})
+            
         }
     </script>
 </body>
