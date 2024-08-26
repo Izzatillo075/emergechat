@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        textarea, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+        }
+        button {
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        textarea {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Post a Message</h2>
+        <textarea id="message" placeholder="Your message" required></textarea><br>
+        <button onclick="sendMessage()">Post</button>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let message = document.getElementById('message').value;
+            if(message.trim() === "") {
+                document.getElementById('status').innerText = "Message cannot be empty!";
+                return;
+            }
+
+            let url = `https://api.telegram.org/bot7140854622:AAGnMJZ08ZvzPNhTqO24NsxfjWa-gL4dXQE/sendMessage?chat_id=-1002147905876&text=${encodeURIComponent(message)}`;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onload = function() {
+                if(xhr.status === 200) {
+                    document.getElementById('status').innerText = "Message sent to Telegram!";
+                    document.getElementById('message').value = "";
+                } else {
+                    document.getElementById('status').innerText = "Failed to send message.";
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
